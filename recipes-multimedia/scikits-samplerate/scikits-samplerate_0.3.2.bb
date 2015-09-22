@@ -16,14 +16,17 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 BBCLASSEXTEND = "native"
 
-inherit distutils
-
+inherit distutils 
 export BUILD_SYS
 export HOST_SYS
 export STAGING_INCDIR
 export STAGING_LIBDIR
 
+# This really shouldn't need to be here but the build blows up trying to find numpy.distutils
+export PYTHONPATH="${STAGING_LIBDIR}:${STAGING_LIBDIR}/${PYTHON_DIR}/site-packages/:$PYTHONPATH"
+
 do_configure_prepend() {
+
      touch ${S}/site.cfg
      rm ${S}/site.cfg
      echo "[samplerate]" >> ${S}/site.cfg
@@ -34,3 +37,4 @@ do_configure_prepend() {
 SRC_URI[md5sum] = "78020e08af5c1fab8dd71b7e846b8fc8"
 SRC_URI[sha256sum] = "f97df7ed18380775076d97a1f9ff175854a6c853fde66dc245a674f581791677"
 
+INHIBIT_PACKAGE_DEBUG_SPLIT="1"
